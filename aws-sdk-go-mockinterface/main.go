@@ -54,17 +54,8 @@ func main() {
 	}
 
 	client := s3.NewFromConfig(cfg)
-	params := &s3.GetObjectInput{
-		Bucket: &bucket,
-		Key: &key,
-	}
+	api, err := NewS3GetObject(client)
 
-	object, err := client.GetObject(context.Background(), params)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer object.Body.Close()
-
-	objectString, _ := ioutil.ReadAll(object.Body)
+	objectString, _ := GetObjectFromS3(context.TODO(), api.Client, bucket, key)
 	fmt.Println(string(objectString))
 }
