@@ -17,7 +17,13 @@ type S3GetObject struct {
 }
 
 // NewS3GetObject returns a new S3GetObject object
-func NewS3GetObject(client *s3.Client) (*S3GetObject, error) {
+func NewS3GetObject() (*S3GetObject, error) {
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		return nil, err
+	}
+	client := s3.NewFromConfig(cfg)
+
 	return &S3GetObject{
 		Client: client,
 	}, nil
@@ -48,13 +54,10 @@ func main() {
 	var bucket = "sample-bucket-thaim"
 	var key = "sample-object-key"
 
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+	api, err := NewS3GetObject()
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	client := s3.NewFromConfig(cfg)
-	api, err := NewS3GetObject(client)
 
 	objectString, _ := GetObjectFromS3(context.TODO(), api.Client, bucket, key)
 	fmt.Println(string(objectString))
