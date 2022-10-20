@@ -10,6 +10,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
+
+// S3GetObject is a structure wraps s3 client
+type S3GetObject struct {
+	Client S3GetObjectAPI
+}
+
+// NewS3GetObject returns a new S3GetObject object
+func NewS3GetObject(client *s3.Client) (*S3GetObject, error) {
+	return &S3GetObject{
+		Client: client,
+	}, nil
+}
+
+
 // S3GetObjectAPI interfaceを定義し、プロダクションコードかテストかに応じて実装をDIできるようにする
 type S3GetObjectAPI interface {
 	GetObject(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error)
