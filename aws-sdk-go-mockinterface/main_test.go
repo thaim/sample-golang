@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"io/ioutil"
-	"strconv"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -19,12 +18,14 @@ func (m mockGetObjectAPI) GetObject(ctx context.Context, params *s3.GetObjectInp
 
 func TestGetObjectFromS3(t *testing.T) {
 	cases := []struct {
+		name string
 		client func(t *testing.T) S3GetObjectAPI
 		bucket string
 		key	string
 		expect []byte
 	}{
 		{
+			name: "return content",
 			client: func(t *testing.T) S3GetObjectAPI {
 				return mockGetObjectAPI(func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
 					t.Helper()
@@ -52,8 +53,8 @@ func TestGetObjectFromS3(t *testing.T) {
 		},
 	}
 
-	for i, tt := range cases {
-		t.Run(strconv.Itoa(i), func(t *testing.T) {
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
 			ctx := context.TODO()
 			content, err := GetObjectFromS3(ctx, tt.client(t), tt.bucket, tt.key)
 			if err != nil {
