@@ -17,6 +17,28 @@ func (m mockGetObjectAPI) GetObject(ctx context.Context, params *s3.GetObjectInp
 }
 
 func TestGetObjectFromS3(t *testing.T) {
+	mockClient := func(t *testing.T) S3GetObjectAPI {
+		return mockGetObjectAPI(func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
+			t.Helper()
+			if params.Bucket == nil {
+				t.Fatal("expect bucket to not be nil")
+			}
+			if e, a := "fooBucket", *params.Bucket; e != a {
+				t.Errorf("expect %v, got %v", e, a)
+			}
+			if params.Key == nil {
+				t.Fatal("expect key to not be nil")
+			}
+			if e, a := "barKey", *params.Key; e != a {
+				t.Errorf("expect %v, got %v", e, a)
+			}
+
+			return &s3.GetObjectOutput{
+				Body: ioutil.NopCloser(bytes.NewReader([]byte("this is the body foo bar baz"))),
+			}, nil
+		})
+	}
+
 	cases := []struct {
 		name string
 		client func(t *testing.T) S3GetObjectAPI
@@ -26,27 +48,7 @@ func TestGetObjectFromS3(t *testing.T) {
 	}{
 		{
 			name: "return content",
-			client: func(t *testing.T) S3GetObjectAPI {
-				return mockGetObjectAPI(func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
-					t.Helper()
-					if params.Bucket == nil {
-						t.Fatal("expect bucket to not be nil")
-					}
-					if e, a := "fooBucket", *params.Bucket; e != a {
-						t.Errorf("expect %v, got %v", e, a)
-					}
-					if params.Key == nil {
-						t.Fatal("expect key to not be nil")
-					}
-					if e, a := "barKey", *params.Key; e != a {
-						t.Errorf("expect %v, got %v", e, a)
-					}
-
-					return &s3.GetObjectOutput{
-						Body: ioutil.NopCloser(bytes.NewReader([]byte("this is the body foo bar baz"))),
-					}, nil
-				})
-			},
+			client: mockClient,
 			bucket: "fooBucket",
 			key:	"barKey",
 			expect: []byte("this is the body foo bar baz"),
