@@ -58,7 +58,7 @@ func TestGetObjectFromS3(t *testing.T) {
 			expect: []byte("this is the body foo bar baz"),
 		},
 		{
-			name: "return nil if object key not exist",
+			name: "return error if object key not exist",
 			client: mockClient,
 			bucket: "fooBucket",
 			key: "non-exist-key",
