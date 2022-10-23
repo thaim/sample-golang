@@ -59,6 +59,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	objectString, _ := GetObjectFromS3(context.TODO(), api.Client, bucket, key)
+	objectString, err := GetObjectFromS3(context.TODO(), api.Client, bucket, key)
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println(string(objectString))
 }
