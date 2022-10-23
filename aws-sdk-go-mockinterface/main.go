@@ -49,8 +49,8 @@ func GetObjectFromS3(ctx context.Context, api S3GetObjectAPI, bucket, key string
 	return ioutil.ReadAll(object.Body)
 }
 
-
-func main() {
+// CallGetObjectFromS3Interface call GetObjectFromS3 w/o depends on aws
+func CallGetObjectFromS3Interface() {
 	var bucket = "sample-bucket-thaim"
 	var key = "sample-object-key"
 
@@ -64,4 +64,27 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Println(string(objectString))
+}
+
+// CallGetObjectFromS3Direct call GetObjectFromS3 using aws sdk
+func CallGetObjectFromS3Direct() {
+	var bucket = "sample-bucket-thaim"
+	var key = "sample-object-key"
+
+	cfg, err := config.LoadDefaultConfig(context.TODO())
+	if err != nil {
+		log.Fatal(err)
+	}
+	var api S3GetObjectAPI = s3.NewFromConfig(cfg)
+
+	objectString, err := GetObjectFromS3(context.TODO(), api, bucket, key)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(objectString))
+}
+
+func main() {
+	CallGetObjectFromS3Interface()
+	CallGetObjectFromS3Direct()
 }
