@@ -11,34 +11,37 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-// ...
-type mockGetObjectAPI func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error)
+type MockGetObject struct {
+	MockGetObjectAPI func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error)
+}
 
-func (m mockGetObjectAPI) GetObject(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
-	return m(ctx, params, optFns...)
+func (m *MockGetObject) GetObject(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
+	return m.MockGetObjectAPI(ctx, params)
 }
 
 func TestGetObjectFromS3(t *testing.T) {
 	mockClient := func(t *testing.T) S3GetObjectAPI {
-		return mockGetObjectAPI(func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
-			t.Helper()
-			if params.Bucket == nil {
-				t.Fatal("expect bucket to not be nil")
-			}
-			if e, a := "fooBucket", *params.Bucket; e != a {
-				t.Errorf("expect %v, got %v", e, a)
-			}
-			if params.Key == nil {
-				t.Fatal("expect key to not be nil")
-			}
-			if e, a := "barKey", *params.Key; e != a {
-				return nil, errors.New("NoSuchKey")
-			}
+		return &MockGetObject{
+			MockGetObjectAPI: func(ctx context.Context, params *s3.GetObjectInput, optFns ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
+				t.Helper()
+				if params.Bucket == nil {
+					t.Fatal("expect bucket to not be nil")
+				}
+				if e, a := "fooBucket", *params.Bucket; e != a {
+					t.Errorf("expect %v, got %v", e, a)
+				}
+				if params.Key == nil {
+					t.Fatal("expect key to not be nil")
+				}
+				if e, a := "barKey", *params.Key; e != a {
+					return nil, errors.New("NoSuchKey")
+				}
 
-			return &s3.GetObjectOutput{
-				Body: ioutil.NopCloser(bytes.NewReader([]byte("this is the body foo bar baz"))),
-			}, nil
-		})
+				return &s3.GetObjectOutput{
+					Body: ioutil.NopCloser(bytes.NewReader([]byte("this is the body foo bar baz"))),
+				}, nil
+			},
+		}
 	}
 
 	cases := []struct {
