@@ -33,6 +33,7 @@ func methodLogging() {
 		Name:  "func",
 		Level: hclog.LevelFromString("INFO"),
 	})
+	appLogger = appLogger.With("request", "5fb446b6-6eba-821d-df1b-cd7501b6a363")
 
 	appLogger.Debug("this message will not print")
 	appLogger.Info("this message will print")
