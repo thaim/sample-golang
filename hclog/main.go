@@ -9,6 +9,7 @@ import (
 func main() {
 	defaultLogging()
 	stdLogging()
+	methodLogging()
 }
 
 func defaultLogging() {
@@ -25,4 +26,13 @@ func stdLogging() {
 	log.SetFlags(0)
 
 	log.Printf("[DEBUG] %d", 42)
+}
+
+func methodLogging() {
+	appLogger := hclog.New(&hclog.LoggerOptions{
+		Name:  "func",
+		Level: hclog.LevelFromString("DEBUG"),
+	})
+
+	appLogger.Info("we are transporting something")
 }
