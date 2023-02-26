@@ -7,12 +7,17 @@ import (
 )
 
 func main() {
+	defaultLogging()
 	stdLogging()
+}
+
+func defaultLogging() {
+	log.Printf("golang default logging")
 }
 
 func stdLogging() {
 	appLogger := hclog.New(&hclog.LoggerOptions{
-		Name:  "my-app",
+		Name:  "stdapp",
 		Level: hclog.LevelFromString("DEBUG"),
 	})
 	log.SetOutput(appLogger.StandardWriter(&hclog.StandardLoggerOptions{InferLevels: true}))
