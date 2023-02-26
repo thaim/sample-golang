@@ -31,8 +31,10 @@ func stdLogging() {
 func methodLogging() {
 	appLogger := hclog.New(&hclog.LoggerOptions{
 		Name:  "func",
-		Level: hclog.LevelFromString("DEBUG"),
+		Level: hclog.LevelFromString("INFO"),
 	})
 
-	appLogger.Info("we are transporting something")
+	appLogger.Debug("this message will not print")
+	appLogger.Info("this message will print")
+	appLogger.Info("message with key-value", "key", 42)
 }
