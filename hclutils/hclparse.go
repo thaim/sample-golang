@@ -8,7 +8,6 @@ import (
 	"github.com/hashicorp/hcl/v2/hclparse"
 )
 
-
 func main() {
 	p := hclparse.NewParser()
 
@@ -18,7 +17,6 @@ func main() {
 		return
 	}
 	fmt.Printf("%s", file.Bytes)
-
 
 	// hclパッケージを用いず予めバッファにファイルを読み込んでおく
 	var body []byte
@@ -43,14 +41,12 @@ func main() {
 	}
 	fmt.Printf("%s", file.Bytes)
 
-
 	// Filesではファイル名とコンテンツのmapが返る
 	mapping := p.Files()
 	for k, v := range mapping {
 		fmt.Printf("filename: %s\n", k)
 		fmt.Printf("contents: %s\n", v.Bytes)
 	}
-
 
 	// Sourcesを使えばhcl.Fileを経由せずにコンテンツを取得できる
 	// これはパースエラー時に利用する(hcl.Fileでは不正なファイルを表現できないので)
