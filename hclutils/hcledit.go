@@ -24,4 +24,9 @@ func main() {
 	// attr1 = "val1"の値を追加する
 	filter = editor.NewAttributeAppendFilter("attr1", "\"val1\"", true)
 	client.Edit("sample.hcl", false, filter)
+	fmt.Println()
+
+	// bを削除する
+	filter = editor.NewAttributeRemoveFilter("b")
+	client.Edit("sample.hcl", false, filter)
 }
