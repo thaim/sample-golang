@@ -23,3 +23,19 @@ b = ["x", "y", "z"]
 ```
 
 ## hcledit
+https://github.com/minamijoyo/hcledit
+
+```bash
+$ go run hcledit.go
+["x", "y", "z"]
+
+a = xyz
+b = ["x", "y", "z"]
+
+a = "aaa"
+b = ["x", "y", "z"]
+
+attr1 = "val1"
+
+a = "aaa"
+```
