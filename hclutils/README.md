@@ -3,6 +3,21 @@ hclutils
 
 HCLファイルの操作ライブラリの動作確認
 
+## hclsimple
+[hclsimple](https://pkg.go.dev/github.com/hashicorp/hcl/v2/hclsimple)はHCLフィアルをパースしてGoの構造体に読み込むパッケージ。
+タグ情報付きの構造体を渡して読み込むので、事前にファイルの構造を定義しておく必要がある。
+
+```bash
+$ go run hclsimple.go
+Configuration is main.Config{LogLevel:"debug"}
+Configuration is main.Config{LogLevel:"info"}
+Configuration is main.ConfigInt{Threshold:123}
+Failed to load configuration: config.hcl:2,5-15: Unsupported argument; An argument named "log_format" is not expected here., and 1 other diagnostic(s)
+Configuration is main.Config{LogLevel:"trace"}
+
+
+```
+
 
 ## hclwrite
 https://pkg.go.dev/github.com/hashicorp/hcl/v2/hclwrite
