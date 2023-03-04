@@ -24,7 +24,7 @@ func main() {
 		fmt.Printf("Failed to load configuration: %s\n", err)
 		return
 	}
-	fmt.Printf("Configuration is %#v\n", config)
+	fmt.Printf("Configuration in config.hcl is %#v\n", config)
 
 	// 変数から読んでデコードする
 	var varString = `
@@ -35,7 +35,7 @@ func main() {
 		fmt.Printf("Failed to load configuration: %s\n", err)
 		return
 	}
-	fmt.Printf("Configuration is %#v\n", config)
+	fmt.Printf("Configuration in varString is %#v\n", config)
 
 	var varInt = `
     power = 123
@@ -45,7 +45,7 @@ func main() {
 		fmt.Printf("Failed to load configuration: %s\n", err)
 		return
 	}
-	fmt.Printf("Configuration is %#v\n", configInt)
+	fmt.Printf("Configuration in varInt is %#v\n", configInt)
 
 	// 未定義のデータが定義されてるとパースエラーになる
 	var varString2 = `
@@ -58,5 +58,17 @@ func main() {
 		fmt.Printf("Failed to load configuration: %s\n", err)
 	}
 	// errにはなるが読み込めている
-	fmt.Printf("Configuration is %#v\n", config)
+	fmt.Printf("Configuration in varString2 is %#v\n", config)
+
+	var varJson = `
+    {
+        "log_level": "error"
+    }
+    `
+	err = hclsimple.Decode("config.json", []byte(varJson), nil, &config)
+	if err != nil {
+		fmt.Printf("Failed to load configuration: %s\n", err)
+	}
+	// jsonファイルも読み込める
+	fmt.Printf("Configuration in varJson is %#v\n", config)
 }

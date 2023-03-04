@@ -9,13 +9,12 @@ HCLファイルの操作ライブラリの動作確認
 
 ```bash
 $ go run hclsimple.go
-Configuration is main.Config{LogLevel:"debug"}
-Configuration is main.Config{LogLevel:"info"}
-Configuration is main.ConfigInt{Threshold:123}
+Configuration in config.hcl is main.Config{LogLevel:"debug"}
+Configuration in varString is main.Config{LogLevel:"info"}
+Configuration in varInt is main.ConfigInt{Threshold:123}
 Failed to load configuration: config.hcl:2,5-15: Unsupported argument; An argument named "log_format" is not expected here., and 1 other diagnostic(s)
-Configuration is main.Config{LogLevel:"trace"}
-
-
+Configuration in varString2 is main.Config{LogLevel:"trace"}
+Configuration in varJson is main.Config{LogLevel:"error"}
 ```
 
 
