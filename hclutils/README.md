@@ -36,6 +36,14 @@ a = "aaa"
 b = ["x", "y", "z"]
 ```
 
+
+## gohcl
+[gohcl](https://pkg.go.dev/github.com/hashicorp/hcl/v2/gohcl) はHCLデータをパースしてGoの構造体に読み込むパッケージ。
+低レベルAPIで、hclsimpleなどはgohclを呼び出すことでパースを実現している。
+hclsimpleはファイルや[]byteのデータを読み込んでパースするが、
+gohclはhcl.Bodyからデータをパースしたり、hclwrite.Bodyにパースしたデータを反映する。
+
+
 ## hcledit
 https://github.com/minamijoyo/hcledit
 
