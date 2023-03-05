@@ -41,7 +41,17 @@ func main() {
 	}
 	fmt.Printf("%s", file.Bytes)
 
+
+	fmt.Println("\nParseHCL for bad syntax")
+	var jsonBody = `{"a": "aaa", "b": ["x", "y", "z"]}`
+	file, diags = p.ParseHCL([]byte(jsonBody), "sample.json")
+	if diags.HasErrors() {
+		fmt.Println(diags.Error())
+	}
+	fmt.Printf("%s\n", file.Bytes)
+
 	// Filesではファイル名とコンテンツのmapが返る
+	fmt.Println()
 	mapping := p.Files()
 	for k, v := range mapping {
 		fmt.Printf("filename: %s\n", k)
