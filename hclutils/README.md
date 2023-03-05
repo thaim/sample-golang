@@ -19,11 +19,19 @@ Configuration in varJson is main.Config{LogLevel:"error"}
 
 
 ## hclwrite
-https://pkg.go.dev/github.com/hashicorp/hcl/v2/hclwrite
+[hclwrite](https://pkg.go.dev/github.com/hashicorp/hcl/v2/hclwrite)はHCLデータを構築するために利用するパッケージ。
+`key = value` 形式のAttribute、`res {...}` 形式のBlock、複数のAttributeやBlockで構成されるBodyでHCLデータを構築する。
 
 ```bash
 $ go run hclwrite.go
-string = "bar"
+foo = "bar"
+resource "aws_s3_bucket" "this" {
+  bucket = "sample-bucket-name"
+  tags = {
+    baz = true
+    foo = 10
+  }
+}
 ```
 
 
