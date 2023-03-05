@@ -6,6 +6,7 @@ HCLファイルの操作ライブラリの動作確認
 ## hclsimple
 [hclsimple](https://pkg.go.dev/github.com/hashicorp/hcl/v2/hclsimple)はHCLフィアルをパースしてGoの構造体に読み込むパッケージ。
 タグ情報付きの構造体を渡して読み込むので、事前にファイルの構造を定義しておく必要がある。
+また、[jsonパッケージ](https://pkg.go.dev/github.com/hashicorp/hcl/v2/json)を用いてjsonファイルを読み込むこともできる
 
 ```bash
 $ go run hclsimple.go
@@ -36,7 +37,9 @@ resource "aws_s3_bucket" "this" {
 
 
 ## hclparse
-https://pkg.go.dev/github.com/hashicorp/hcl/v2/hclparse
+[hclparse](https://pkg.go.dev/github.com/hashicorp/hcl/v2/hclparse)はファイルをパースしてHCLのシンタックスチェックを行う。
+また、パースしたファイルとその内容の対応関係を管理する。
+シンタックスチェック自体はhclsyntaxで行うが、基本的にはhclparse経由で利用する。
 
 ```bash
 $ go run hclparse.go
